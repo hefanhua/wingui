@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+#-*- conding:utf-8 #-*-
+#Copyright (C) ***
+import sys
+import time
+
+import tkinter as tk
+from tkinter import filedialog
+
+def win():
+    def selectfile():
+        sfname = filedialog.askopenfilename(title='选择Excel文件', filetypes=[('Excel', '*.xlsx'), ('All Files', '*')])
+        return sfname
+
+    win = tk.Tk()
+    win.geometry('500x300')
+    win.title('image to str')
+    btn01 = tk.Button(win,text='btn01',command=selectfile)
+    # btn01.place(relx=0.5, rely=0.5,relheight=0.1,relwidth=0.5)
+    btn01.place(x= 300,y = 150,height=20,width=80)
+    entry1 = tk.Entry(win,)
+    entry1.place(x= 200,y = 150,height=20,width=100)
+    
+
+
+
+
+
+    win.mainloop()
+
+if __name__ == '__main__':
+    win()
