@@ -7,33 +7,83 @@ import pathlib
 import os
 import tkinter as tk
 from tkinter import filedialog
+import tkinter.messagebox
 import re
 # file = 'time.png'
 
 def main():
 
-    def selectfile(entry):
-        pathname = filedialog.askopenfilename(title='选择Excel文件', filetypes=[('Excel', '*.xlsx'), ('All Files', '*')])
+    def selectfile_path(entry):
+        pathname = filedialog.askopenfilename(title='选择图片文件',
+                                              filetypes=[('PIC', '*.png'),
+                                                         ('PIC', '*.jpg'),
+                                                         ('PIC', '*.jpeg'),
+                                                         ('All Files', '*')],
+                                              initialdir = r'C:\Users\jhf\Desktop\demop')#默认文件夹
+        entry.delete(0,'end')
         entry.insert(0,pathname)
-        print(pathname)
-    def selectfile(entry):
+        print(pathname) 
+
+
+    def selectfile_name(entry):
         pathname = filedialog.askopenfilename(title='选择Excel文件', filetypes=[('Excel', '*.xlsx'), ('All Files', '*')])
-        entry.insert(0,pathname)
-        print(pathname)
+        entry.delete(0,'end')
+        entry.insert(0,os.path.basename(pathname))
+        #print(pathname)
+
+    def get_entry1():
+        path1 = entry1.get()
+        return path1
+    def get_entry3(entry_x):
+        path1 = get_entry1()
+        b=pathlib.Path(path1).name
+        entry_x.delete(0,'end')
+        entry_x.insert(0,b)
+
+    def get_entry(entry1,entry2):
+        a = entry1.get()
+        b=pathlib.Path(a).name
+        entry2.delete(0,'end')
+        entry2.insert(0,b)
+
+    def quit1(win):
+        ask = tk.messagebox.askyesno(title='询问', message='─=≡Σ(((つ•̀ω•́)つ 再见？')
+        if ask == False:
+            pass
+        else:
+            win.destroy()
+    def itos():
+        filepath  =get_entry1()
+        
+
+
     win = tk.Tk()
     win.geometry('500x300')
     win.title('image to str')
     entry1 = tk.Entry(win, )
-    entry1.place(x=200, y=150, height=20, width=100)
+    entry1.place(x=150, y=150, height=20, width=150)
     entry2 = tk.Entry(win, )
-    entry2.place(x=200, y=180, height=20, width=100)
+    entry2.place(x=150, y=180, height=20, width=150)
 
 
 
-    btn01 = tk.Button(win, text='btn01', command = lambda : selectfile(entry1))
+    btn01 = tk.Button(win, text='文件路径', command = lambda : selectfile_path(entry1))
     # btn01.place(relx=0.5, rely=0.5,relheight=0.1,relwidth=0.5)
     btn01.place(x=300, y=150, height=20, width=80)
 
+
+    btn02 = tk.Button(win, text='文件名', command = lambda : get_entry3(entry2))
+    btn02.place(x=300, y=180, height=20, width=80)
+
+    btn03 = tk.Button(win, text='start', command = None)
+    btn03.place(x=400, y=150, height=20, width=40)
+
+
+    btn03 = tk.Button(win, text='quit()',bg = 'red', command = lambda:quit1(win))
+    btn03.place(x=450, y=250, height=20, width=40)
+
+
+    
 
 
     win.mainloop()
