@@ -8,43 +8,48 @@ import os
 import tkinter as tk
 from tkinter import filedialog
 import tkinter.messagebox
+from PIL import Image
+import datetime
 import re
+import sys
+sys.setrecursionlimit(2000)
+
+
 # file = 'time.png'
 
 def main():
-
     def selectfile_path(entry):
         pathname = filedialog.askopenfilename(title='选择图片文件',
                                               filetypes=[('PIC', '*.png'),
                                                          ('PIC', '*.jpg'),
                                                          ('PIC', '*.jpeg'),
                                                          ('All Files', '*')],
-                                              initialdir = r'C:\Users\jhf\Desktop\demop')#默认文件夹
-        entry.delete(0,'end')
-        entry.insert(0,pathname)
-        print(pathname) 
-
+                                              initialdir=r'C:\Users\jhf\Desktop\demop')  # 默认文件夹
+        entry.delete(0, 'end')
+        entry.insert(0, pathname)
+        # print(pathname)
 
     def selectfile_name(entry):
         pathname = filedialog.askopenfilename(title='选择Excel文件', filetypes=[('Excel', '*.xlsx'), ('All Files', '*')])
-        entry.delete(0,'end')
-        entry.insert(0,os.path.basename(pathname))
-        #print(pathname)
+        entry.delete(0, 'end')
+        entry.insert(0, os.path.basename(pathname))
+        # print(pathname)
 
     def get_entry1():
         path1 = entry1.get()
         return path1
+
     def get_entry3(entry_x):
         path1 = get_entry1()
-        b=pathlib.Path(path1).name
-        entry_x.delete(0,'end')
-        entry_x.insert(0,b)
+        b = pathlib.Path(path1).name
+        entry_x.delete(0, 'end')
+        entry_x.insert(0, b)
 
-    def get_entry(entry1,entry2):
+    def get_entry(entry1, entry2):
         a = entry1.get()
-        b=pathlib.Path(a).name
-        entry2.delete(0,'end')
-        entry2.insert(0,b)
+        b = pathlib.Path(a).name
+        entry2.delete(0, 'end')
+        entry2.insert(0, b)
 
     def quit1(win):
         ask = tk.messagebox.askyesno(title='询问', message='─=≡Σ(((つ•̀ω•́)つ 再见？')
@@ -52,9 +57,39 @@ def main():
             pass
         else:
             win.destroy()
-    def itos():
-        filepath  =get_entry1()
-        
+
+    def show():
+        filepath = get_entry1()
+        # if filepath:
+        path_filepath = pathlib.Path(filepath)
+        is_fm = path_filepath.is_file()
+        if is_fm:
+            im1 = Image.open(filepath)
+            im1.show()
+        else:
+            ask = tk.messagebox.showwarning('错误', message='文件路径错误')
+
+    def start1():
+        pass
+    def get_time():
+        time1 = tk.StringVar()
+        now = datetime.datetime.now()
+        nowt = now.strftime('%Y/%m/%d  %H:%M:%S')
+        time1.set(nowt)
+
+
+        label2 = tk.Label(win,
+                          #text=nowt,
+                          textvariable = time1,
+                          bg='gold',
+
+                          # cursor='clock',
+                          font=('楷体', 8),
+
+                          )
+
+        label2.place(x=60, y=250)
+        win.after(1000, get_time())
 
 
     win = tk.Tk()
@@ -65,25 +100,34 @@ def main():
     entry2 = tk.Entry(win, )
     entry2.place(x=150, y=180, height=20, width=150)
 
-
-
-    btn01 = tk.Button(win, text='文件路径', command = lambda : selectfile_path(entry1))
+    btn01 = tk.Button(win, text='文件路径', command=lambda: selectfile_path(entry1))
     # btn01.place(relx=0.5, rely=0.5,relheight=0.1,relwidth=0.5)
     btn01.place(x=300, y=150, height=20, width=80)
 
-
-    btn02 = tk.Button(win, text='文件名', command = lambda : get_entry3(entry2))
+    btn02 = tk.Button(win, text='文件名', command=lambda: get_entry3(entry2))
     btn02.place(x=300, y=180, height=20, width=80)
 
-    btn03 = tk.Button(win, text='start', command = None)
+    btn03 = tk.Button(win, text='预览', command=lambda: show())
     btn03.place(x=400, y=150, height=20, width=40)
 
+    btn04 = tk.Button(win, text='quit()', bg='red', command=lambda: quit1(win))
+    btn04.place(x=450, y=250, height=20, width=40)
 
-    btn03 = tk.Button(win, text='quit()',bg = 'red', command = lambda:quit1(win))
-    btn03.place(x=450, y=250, height=20, width=40)
+    btn05 = tk.Button(win, text='start()', bg='green', command=None)
+    btn05.place(x=400, y=250, height=20, width=40)
+
+    label1 = tk.Label(win, text='当前时间:',
+                      # bg='gold',
+                      cursor='clock',
+
+                      font=('楷体', 8)
+
+                      )
+    cursor = []
+    label1.place(x=0, y=280)
 
 
-    
+    win.after(1000,get_time())
 
 
     win.mainloop()
