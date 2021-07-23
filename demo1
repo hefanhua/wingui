@@ -12,7 +12,7 @@ from PIL import Image
 import datetime
 import re
 import sys
-sys.setrecursionlimit(2000)
+#sys.setrecursionlimit(2000)
 
 
 # file = 'time.png'
@@ -68,28 +68,25 @@ def main():
             im1.show()
         else:
             ask = tk.messagebox.showwarning('错误', message='文件路径错误')
-
-    def start1():
-        pass
     def get_time():
         time1 = tk.StringVar()
         now = datetime.datetime.now()
         nowt = now.strftime('%Y/%m/%d  %H:%M:%S')
-        time1.set(nowt)
+        label2.config(text = nowt)
+        label2.after(1000,get_time)
+    def start1():
+        filepath = get_entry1()
+        ima1 = Image.open(filepath)
+        global text1
+        text1 = pytesseract.image_to_string(ima1)
+        with open("c.txt",mode='a',encoding='utf - 8') as f:
+            f.write(text1)
+        tk.messagebox._show(message='okkk')
+    def view():
+        label3.config(text = text1)
 
 
-        label2 = tk.Label(win,
-                          #text=nowt,
-                          textvariable = time1,
-                          bg='gold',
 
-                          # cursor='clock',
-                          font=('楷体', 8),
-
-                          )
-
-        label2.place(x=60, y=250)
-        win.after(1000, get_time())
 
 
     win = tk.Tk()
@@ -113,13 +110,15 @@ def main():
     btn04 = tk.Button(win, text='quit()', bg='red', command=lambda: quit1(win))
     btn04.place(x=450, y=250, height=20, width=40)
 
-    btn05 = tk.Button(win, text='start()', bg='green', command=None)
+    btn05 = tk.Button(win, text='start()', bg='green', command=lambda :start1())
     btn05.place(x=400, y=250, height=20, width=40)
+
+    btn06 = tk.Button(win, text='view', bg='yellow', command=lambda: view())
+    btn06.place(x=100, y=100, height=20, width=40)
 
     label1 = tk.Label(win, text='当前时间:',
                       # bg='gold',
                       cursor='clock',
-
                       font=('楷体', 8)
 
                       )
@@ -127,9 +126,31 @@ def main():
     label1.place(x=0, y=280)
 
 
-    win.after(1000,get_time())
+
+    label2 = tk.Label(win,
+
+                      bg='gold',
+                      # cursor='clock',
+                      font=('楷体', 8),
+
+                      )
+
+    label2.place(x=60, y=280)
+
+    label3 = tk.Label(win,
+                      text = 'view',
+
+                      #textvariable = con1,
+                      bg='gold',
+                      # cursor='clock',
+                      font=('楷体', 8),
+
+                      )
+
+    label3.place(x=60, y=200)
 
 
+    get_time()
     win.mainloop()
 
 
